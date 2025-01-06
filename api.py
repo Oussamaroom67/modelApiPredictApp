@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 
 # Chargement des fichiers et du modèle
-model = joblib.load("medicalModel.joblib")
+model = joblib.load("predictModel.joblib")
 symptom_weights = pd.read_csv("Symptom-severity-adjusted.csv")
 description_df = pd.read_csv("symptom_Description.csv")
 precaution_df = pd.read_csv("symptom_precaution.csv")
@@ -35,13 +35,15 @@ def predict():
         print("Données reçues :", data)
 
         symptoms = data.get("symptoms", [])
+        
         if not symptoms:
             return jsonify({"error": "Aucun symptôme fourni"}), 400
-
-        print("Symptômes reçus :", symptoms)
+        
+        processed_symptoms = [symptom.replace(' ', '_') for symptom in symptoms]
+        print("Symptômes reçus :", processed_symptoms)
 
         # Encodage des symptômes
-        encoded_symptoms = encode_symptoms(symptoms)
+        encoded_symptoms = encode_symptoms(processed_symptoms)
         print("Symptômes encodés :", encoded_symptoms)
 
         # Prédiction
@@ -56,7 +58,7 @@ def predict():
         precautions = precaution_df.loc[precaution_df['Disease'] == prediction].iloc[0, 1:].dropna().tolist()
         print("Description :", description)
         print("Précautions :", precautions)
-
+        
         return jsonify({
             "disease": prediction,
             "confidence": predicted_probability,
