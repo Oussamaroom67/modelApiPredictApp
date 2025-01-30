@@ -71,6 +71,12 @@ python api.py
   ```
 
 ---
+
+## 📜 License
+This project is licensed under the **MIT License**.
+
+---
+
 ## 👤 Authors
 📝 Project developed by **Oussama Nouhar, Omaima Siaf, and Souhayla Ghanem**.
 
